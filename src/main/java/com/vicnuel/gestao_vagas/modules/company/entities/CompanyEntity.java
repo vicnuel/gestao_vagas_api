@@ -30,8 +30,8 @@ public class CompanyEntity {
 
     // no máximo 32 caracteres, pelo menos 10 caracteres. No banco de dados, o tamanho máximo é 250 caracteres.
     @NotBlank
-    @Length(min = 10, max = 32)
-    @Column(length = 150)
+    @Length(min = 10, max = 100)
+    @Column(length = 200)
     private String password;
     @Length( max = 250)
     private String website;

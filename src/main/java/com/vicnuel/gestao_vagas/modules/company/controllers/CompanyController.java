@@ -21,6 +21,7 @@ public class CompanyController {
     private ResponseEntity<Object> create(@Valid @RequestBody CompanyEntity company) {
         try {
             var result = this.createCompanyUseCase.execute(company);
+            result.setPassword(null);
             return ResponseEntity.ok().body(result);
         } catch (UserFoundException e) {
             return ResponseEntity.badRequest().body(e.getMessage());

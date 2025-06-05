@@ -31,8 +31,8 @@ public class CandidateEntity {
 
     // no máximo 32 caracteres, pelo menos 10 caracteres. No banco de dados, o tamanho máximo é 250 caracteres.
     @NotBlank
-    @Length(min = 10, max = 32)
-    @Column(length = 150)
+    @Column(length = 200)
+    @Length(min = 10, max = 100)
     private String password;
     @Length( max = 250)
     private String description;
