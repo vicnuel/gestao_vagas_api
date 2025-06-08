@@ -16,17 +16,21 @@ public class SecurityConfig {
     @Autowired
     SecurityFilter securityFilter;
 
+    @Autowired
+    private SecurityCandidateFilter securityCandidateFilter;
+
     // bean serve para indicar que algo do Spring será sobrescrito
     @Bean
     SecurityFilterChain securityFilterChain (HttpSecurity http) throws Exception {
         http.csrf(AbstractHttpConfigurer::disable).authorizeHttpRequests(auth -> {
             auth.requestMatchers("/candidate").permitAll()
             .requestMatchers("/company").permitAll()
-                            .requestMatchers("/auth/company").permitAll()
+                            .requestMatchers("/company/auth").permitAll()
                     .requestMatchers("/candidate/auth").permitAll();
 
             auth.anyRequest().authenticated();
         })
+                .addFilterBefore(securityCandidateFilter, BasicAuthenticationFilter.class)
                 .addFilterBefore(securityFilter, BasicAuthenticationFilter.class);
         return http.build();
     }

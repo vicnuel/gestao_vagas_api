@@ -15,13 +15,13 @@ import javax.naming.AuthenticationException;
 import java.util.Map;
 
 @RestController
-@RequestMapping("auth")
+@RequestMapping("company")
 public class AuthCompanyController {
 
     @Autowired
     private AuthCompanyUseCase authCompanyUseCase;
 
-    @PostMapping("company")
+    @PostMapping("auth")
     public ResponseEntity<Object> loginCompany(@RequestBody AuthCompanyDTO authCompanyDTO)  {
         try {
             return ResponseEntity.ok().body(Map.of("token", this.authCompanyUseCase.execute(authCompanyDTO)));

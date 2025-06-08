@@ -1,12 +1,12 @@
 package com.vicnuel.gestao_vagas.security;
 
+import com.vicnuel.gestao_vagas.providers.JWTCandidateProvider;
 import com.vicnuel.gestao_vagas.providers.JWTProvider;
 import jakarta.servlet.FilterChain;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.HttpStatus;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Component;
@@ -16,9 +16,9 @@ import java.io.IOException;
 import java.util.Collections;
 
 @Component
-public class SecurityFilter extends OncePerRequestFilter {
+public class SecurityCandidateFilter extends OncePerRequestFilter {
     @Autowired
-    private JWTProvider jwtProvider;
+    private JWTCandidateProvider jwtProvider;
     @Override
     protected void doFilterInternal(HttpServletRequest request,
                                     HttpServletResponse response,
@@ -27,22 +27,23 @@ public class SecurityFilter extends OncePerRequestFilter {
         SecurityContextHolder.getContext().setAuthentication(null);
         var header = request.getHeader("Authorization");
 
-        if(request.getRequestURI().startsWith("/company")) {
-
+        if(request.getRequestURI().startsWith("/candidate")){
             if (header != null) {
 //                System.out.println(header);
-                var subject = this.jwtProvider.validateToken(header);
+                var candidate = this.jwtProvider.validateToken(header);
 
-                if (subject.isEmpty()) {
+                if(candidate == null) {
                     response.setStatus(HttpServletResponse.SC_UNAUTHORIZED);
                     return;
                 }
 
-                request.setAttribute("company_id", subject);
+                request.setAttribute("candidate_id", candidate.getSubject());
+
+                var roles = candidate.getClaim("roles");
 
                 UsernamePasswordAuthenticationToken auth = new UsernamePasswordAuthenticationToken(
-                        subject,
-                        null,
+                        candidate.getSubject(),
+                        roles.asArray(String.class),
                         Collections.emptyList()
                 );
 
