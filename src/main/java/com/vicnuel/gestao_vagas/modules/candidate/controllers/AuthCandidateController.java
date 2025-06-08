@@ -1,7 +1,7 @@
-package com.vicnuel.gestao_vagas.modules.company.controllers;
+package com.vicnuel.gestao_vagas.modules.candidate.controllers;
 
-import com.vicnuel.gestao_vagas.modules.company.dto.AuthCompanyDTO;
-import com.vicnuel.gestao_vagas.modules.company.useCases.AuthCompanyUseCase;
+import com.vicnuel.gestao_vagas.modules.candidate.dto.AuthCandidateDTO;
+import com.vicnuel.gestao_vagas.modules.candidate.useCases.AuthCandidateUseCase;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -12,19 +12,18 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import javax.naming.AuthenticationException;
-import java.util.Map;
 
 @RestController
-@RequestMapping("auth")
-public class AuthCompanyController {
+@RequestMapping("candidate")
+public class AuthCandidateController {
 
     @Autowired
-    private AuthCompanyUseCase authCompanyUseCase;
+    private AuthCandidateUseCase authCandidateUseCase;
 
-    @PostMapping("company")
-    public ResponseEntity<Object> loginCompany(@RequestBody AuthCompanyDTO authCompanyDTO)  {
+    @PostMapping("auth")
+    public ResponseEntity<Object> loginCompany(@RequestBody AuthCandidateDTO authCandidateDTO)  {
         try {
-            return ResponseEntity.ok().body(Map.of("token", this.authCompanyUseCase.execute(authCompanyDTO)));
+            return ResponseEntity.ok().body( this.authCandidateUseCase.execute(authCandidateDTO));
         } catch (AuthenticationException | UsernameNotFoundException e) {
             return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body(e.getMessage());
         } catch (Exception e) {

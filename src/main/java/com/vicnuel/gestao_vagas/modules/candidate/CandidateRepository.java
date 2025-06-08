@@ -10,5 +10,5 @@ public interface CandidateRepository extends JpaRepository<CandidateEntity, UUID
     // O Spring Data JPA busca metodos com "findBy"
     // O operador "Or" ou "And" pode ser usado e tem funções diferentes
     Optional<CandidateEntity> findByUsernameOrEmail(String username, String email);
-
+    Optional<CandidateEntity> findByUsername(String username);
 }
